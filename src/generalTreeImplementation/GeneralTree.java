@@ -22,7 +22,7 @@ public class GeneralTree {
 
     long timeEnd = System.currentTimeMillis();
     long creationTime = timeEnd - timeStart;
-    
+
     System.out.println("General tree creation time: (Millis) " + creationTime);
 
   }
@@ -58,6 +58,15 @@ public class GeneralTree {
   private static boolean isStartFound = false;
   private static long traverseStartTime = 0;
   private static long traverseEndTime = 0;
+  private static int traversalLevel = 0;
+ /*  
+ TODO : identify what is the current shortest distance between two nodes,
+ 1. if those nodes are parent-child - can be achieved by subtracting the height of the parent with the child
+ 2. if those nodes belong to the same or 
+    same/different level with similar/different
+    parents and/or sharing ancestors - I Don't Know how to do this part
+ */
+    
   /***
    * Traversing the tree in an in-order fashion, starting from 
    * the first child of the children node.
@@ -70,11 +79,12 @@ public class GeneralTree {
   private static void checkNodeDistanceOfTwoNodes(GeneralTreeNode rootNode, int a, int b) {
 
     if (rootNode == null) {
+      traversalLevel--;
       return;
     }
     
     nodesTraversed += (isStartFound) ? 1: 0; 
-    String message = "VISITED : " + rootNode.dataInside;
+    String message = "VISITED : " + rootNode.dataInside + " traversal level : " + traversalLevel;
     
     if (rootNode.dataInside == a) {
       isStartFound = true;
@@ -84,7 +94,8 @@ public class GeneralTree {
     else if (rootNode.dataInside == b) {
       
       traverseEndTime = System.currentTimeMillis();
-      message += " <-- found end : nodes traversed = " + nodesTraversed + " time in millis : " + (traverseEndTime - traverseStartTime); 
+      message += " <-- found end : nodes traversed = " + nodesTraversed +
+      " time in millis : " + (traverseEndTime - traverseStartTime); 
       
       // return the default values of the function variables
       
@@ -94,14 +105,14 @@ public class GeneralTree {
       traverseEndTime = 0;
       traverseStartTime = 0;
       isStartFound = false;
-
+      traversalLevel = 0;
       // end function -- RECURSION BASE CASEs
       return;
     }
     System.out.println( message );
     // traverse children if found no match between data
     for (GeneralTreeNode childNode : rootNode.children) {
-      
+      traversalLevel++;
       checkNodeDistanceOfTwoNodes(childNode, a, b);
     }
   }
