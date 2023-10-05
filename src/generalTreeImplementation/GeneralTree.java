@@ -1,10 +1,23 @@
 package src.generalTreeImplementation;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class GeneralTree {
-  
-  GeneralTreeNode rootNode;
 
+  public static void main(String[] args) {
+    GeneralTree test = new GeneralTree();
+
+    // checkNodeDistanceOfTwoNodes(test.rootNode, 3, 6);
+
+    // checkNodeDistanceOfTwoNodes(test.rootNode, 1, 6);
+
+    // checkNodeDistanceOfTwoNodes(test.rootNode, 2, 4);
+  
+    testingUserInputConverter();
+  }
+
+  GeneralTreeNode rootNode;
   public GeneralTree() {
 
     long timeStart = System.currentTimeMillis();
@@ -30,17 +43,26 @@ public class GeneralTree {
   // this function will not work. kind of sucks
   private static void printOutTree(GeneralTree tree) {
 
-    printNode(tree.rootNode,0);
-    
-    printNode(tree.rootNode.children[0],0);
-    printNode(tree.rootNode.children[1],0);
-    
-    printNode(tree.rootNode.children[1].children[0],1);
-    printNode(tree.rootNode.children[1].children[1],1);
-    printNode(tree.rootNode.children[1].children[2],1);
+    printNode(tree.rootNode, 0);
 
-    printNode(tree.rootNode.children[2],1);
+    printNode(tree.rootNode.children[0], 0);
+    printNode(tree.rootNode.children[1], 0);
 
+    printNode(tree.rootNode.children[1].children[0], 1);
+    printNode(tree.rootNode.children[1].children[1], 1);
+    printNode(tree.rootNode.children[1].children[2], 1);
+
+    printNode(tree.rootNode.children[2], 1);
+
+  }
+  
+
+  public void printAllData(TreeNodeForGeneralTreeCreation node) {
+    String padding = "  ".repeat(node.depth) + "|__"; // Create padding based on depth
+    System.out.println(padding + " " + node.data);
+    for (TreeNodeForGeneralTreeCreation child : node.children) {
+      printAllData(child); // Recursively print children
+    }
   }
   
   private static void printNode(GeneralTreeNode node, int heightStartPadding) {
@@ -117,13 +139,31 @@ public class GeneralTree {
     }
   }
 
-  public static void main(String[] args) {
-    GeneralTree test = new GeneralTree();
+  
 
-    checkNodeDistanceOfTwoNodes(test.rootNode, 3, 6);
-    
-    checkNodeDistanceOfTwoNodes(test.rootNode, 1, 6);
+  public static int[][] convertToUnorderedPairs(int[] numbers) {
+        List<int[]> pairsList = new ArrayList<>();
 
-    checkNodeDistanceOfTwoNodes(test.rootNode, 2, 4);
-  }
+        for (int firstNumIndex = 0; firstNumIndex < numbers.length; firstNumIndex = firstNumIndex + 2) {
+
+          int[] pair = { numbers[firstNumIndex], numbers[firstNumIndex + 1] };
+          pairsList.add(pair);
+
+        }
+
+        int[][] pairsArray = new int[pairsList.size()][2];
+        pairsList.toArray(pairsArray);
+
+        return pairsArray;
+    }
+
+    public static void testingUserInputConverter() {
+        int[] inputArray = { 1, 2, 2, 3 ,3 ,5 };
+        int[][] pairs = convertToUnorderedPairs(inputArray);
+
+        for (int[] pair : pairs) {
+            System.out.println("{" + pair[0] + ", " + pair[1] + "}");
+        }
+    }
+
 }
