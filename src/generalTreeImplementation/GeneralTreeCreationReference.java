@@ -55,7 +55,12 @@ public class GeneralTreeCreationReference {
 
     
     // test node data from problem
-    //1 2 1 3 1 4 3 5 3 6 3 7
+    //1 2 1 3 1 4 3 5 3 6 3 7                   nodes = 7 
+    //1 2 1 3 1 4 3 5 3 6 3 7 3 8               nodes = 8
+    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9           nodes = 9             input data : 1 2 3 4 5 6 7 8 9      result : total time (millis) : 3016  pairs : 36 
+    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10      nodes = 10            input data : 1 2 3 4 5 5 7 8 9 10   result : total time (millis) : 4706 pairs : 45
+    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11     nodes = 11
+    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11 5 12     nodes = 12
 
     testingUserInputConverter();
   }
@@ -69,7 +74,13 @@ public class GeneralTreeCreationReference {
     
     ArrayList<int[]> unorderedPairQuery = testingUnorderedPairConverter(input);
 
+    // program time calculation and test cases variables
+    long totaltime = 0;
+    int numOfTotalPairs = unorderedPairQuery.size();
+    
     long totalResult = 0;
+    
+    
     String outPutMessage = "";
     for (int[] query : unorderedPairQuery) {
 
@@ -83,13 +94,16 @@ public class GeneralTreeCreationReference {
           " is " + distance + " : Expression Result ( (" + query[0] + " * " + query[1] + " * " + distance
           + " ) % 1000000007( or 10^9 + 7) ) = " + expressionResult + "\n";
       long endTime = System.currentTimeMillis();
-      System.out.println( "time (millis) : " + ( endTime - startTime));
+      totaltime += endTime - startTime;
+   
     }
     
     outPutMessage += " THE TOTAL VALUE FROM PROBLEM EXRPRESSION : " + totalResult + "\n" + stringRepresentingTree;
 
     JOptionPane.showMessageDialog(null, outPutMessage);
     System.out.println(outPutMessage);
+
+    System.out.println( "total time (millis) : " + totalResult + "  pairs : " + numOfTotalPairs);
   }
 
 
