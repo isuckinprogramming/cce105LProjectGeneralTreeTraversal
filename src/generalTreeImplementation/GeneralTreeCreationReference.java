@@ -59,9 +59,11 @@ public class GeneralTreeCreationReference {
     //1 2 1 3 1 4 3 5 3 6 3 7 3 8               nodes = 8
     //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9           nodes = 9             input data : 1 2 3 4 5 6 7 8 9      result : total time (millis) : 3016  pairs : 36 
     //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10      nodes = 10            input data : 1 2 3 4 5 5 7 8 9 10   result : total time (millis) : 4706 pairs : 45
-    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11     nodes = 11
-    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11 5 12     nodes = 12
-
+    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11     nodes = 11        input data : 1 2 3 4 5 6 7 8 9 10 11 result : total time (millis) : 7005 pairs : 55
+    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11 5 12     nodes = 12   input data : 1 2 3 4 5 6 7 8 9 10 11 12 result: total time (millis) : 10833 pairs : 66
+    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11 5 12 2 13     nodes = 13   input data : 1 2 3 4 5 6 7 8 9 10 11 12 13 result: total time (millis) : 14902 pairs : 78
+    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11 5 12 2 13 9 14    nodes = 14   input data : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 result: total time (millis) : 21286 pairs : 91
+    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11 5 12 2 13 9 14 7 15   nodes = 14   input data : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 result: 29386 pairs : total time (millis) : 29386 pairs : 105
     testingUserInputConverter();
   }
   
