@@ -56,29 +56,38 @@ public class GeneralTreeCreationReference {
     
     // test node data from problem
     //1 2 1 3 1 4 3 5 3 6 3 7
+
     testingUserInputConverter();
   }
   
   public static void proceedWithShortestPathBetweenTwoNodesProgramPrompt( GeneralTreeCreationReference tree) {
 
-    // getStringRepresentation(tree.root);
-
     String input = JOptionPane
-        .showInputDialog("GENERAL TREE VISUALIZATION\n" + stringRepresentingTree + "\nInput number to find path inside tree: ");
+        .showInputDialog(
+            "GENERAL TREE VISUALIZATION\n" + stringRepresentingTree + "\nInput number to find path inside tree: ");
 
+    
     ArrayList<int[]> unorderedPairQuery = testingUnorderedPairConverter(input);
 
+    long totalResult = 0;
     String outPutMessage = "";
     for (int[] query : unorderedPairQuery) {
 
+      long startTime = System.currentTimeMillis();
+
+      int distance = tree.shortestDistance(query[0], query[1]);
+      long expressionResult = ( query[0] * query[1] * distance ) % 1000000007;
+      totalResult += expressionResult;
       // concatenate output message
-      outPutMessage += 
-        "Shortest Path from : " + query[0] + " and " + query[1] +
-        " is " + tree.shortestDistance(query[0], query[1]) + "\n";
+      outPutMessage += "Shortest Distance of : " + query[0] + " and " + query[1] +
+          " is " + distance + " : Expression Result ( (" + query[0] + " * " + query[1] + " * " + distance
+          + " ) % 1000000007( or 10^9 + 7) ) = " + expressionResult + "\n";
+      long endTime = System.currentTimeMillis();
+      System.out.println( "time (millis) : " + ( endTime - startTime));
     }
     
+    outPutMessage += " THE TOTAL VALUE FROM PROBLEM EXRPRESSION : " + totalResult + "\n" + stringRepresentingTree;
 
-    outPutMessage += stringRepresentingTree;
     JOptionPane.showMessageDialog(null, outPutMessage);
     System.out.println(outPutMessage);
   }
@@ -213,7 +222,7 @@ public class GeneralTreeCreationReference {
     if (path1.isEmpty() || path2.isEmpty()) {
       return -1; // One or both nodes are not reachable from the root
     }
-    
+
     // Calculate the distance by summing the lengths of both paths minus 2
     // (subtract 2 to remove the common ancestor and avoid double counting)
     int distance = (path1.size() - 1) + (path2.size() - 1);
@@ -292,7 +301,6 @@ public class GeneralTreeCreationReference {
     System.out.println(stringRepresentingTree);
 
     proceedWithShortestPathBetweenTwoNodesProgramPrompt(testTree);
-
   }
 
   public static ArrayList<int[]> testingUnorderedPairConverter(String userInput) {
