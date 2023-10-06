@@ -15,7 +15,6 @@ class TreeNodeForGeneralTreeCreation {
     private int parentData;
     private int nodeData;
     private int depth;
-    private TreeNodeForGeneralTreeCreation refToParent;
     private List<TreeNodeForGeneralTreeCreation> children;
 
     public TreeNodeForGeneralTreeCreation(
@@ -54,7 +53,9 @@ public class GeneralTreeCreationReference {
 
   public static void main(String[] args) {
 
-    // testingShortestPath();
+    
+    // test node data from problem
+    //1 2 1 3 1 4 3 5 3 6 3 7
     testingUserInputConverter();
   }
   
@@ -65,16 +66,21 @@ public class GeneralTreeCreationReference {
     String input = JOptionPane
         .showInputDialog("GENERAL TREE VISUALIZATION\n" + stringRepresentingTree + "\nInput number to find path inside tree: ");
 
-    String[] numbersRaw = input.split(" ");
+    ArrayList<int[]> unorderedPairQuery = testingUnorderedPairConverter(input);
 
-    int[] numToFind = { Integer.parseInt(numbersRaw[0]), Integer.parseInt(numbersRaw[1]) };
+    String outPutMessage = "";
+    for (int[] query : unorderedPairQuery) {
 
-    String outPutMessage = 
-      "Shortest Path from : " + numToFind[0] + " and " + numToFind[1] + " is "
-      + tree.shortestDistance(numToFind[0], numToFind[1])
-      + "\n" + stringRepresentingTree;
-      
+      // concatenate output message
+      outPutMessage += 
+        "Shortest Path from : " + query[0] + " and " + query[1] +
+        " is " + tree.shortestDistance(query[0], query[1]) + "\n";
+    }
+    
+
+    outPutMessage += stringRepresentingTree;
     JOptionPane.showMessageDialog(null, outPutMessage);
+    System.out.println(outPutMessage);
   }
 
 
@@ -191,65 +197,6 @@ public class GeneralTreeCreationReference {
       return path; // Target node is not reachable from the root
     }
 
-    // will not work - tried to create a custom of the code generated from chat gpt but I fucked up because I don't 
-    // know how the code operates under the hood
-    public List<Integer> shortestPathBetweenTwoNodes(int startPoint, int endPoint) {
-    
-    List<Integer> path = new ArrayList<>();
-    
-    // the rootnode will be used as the base for finding and searching the data
-    // the starting node can be changed but I haven't tested how yet
-    TreeNodeForGeneralTreeCreation refToTargetDestinationNode = findNode(root, endPoint);
-    
-    TreeNodeForGeneralTreeCreation refToStartNode = findNode(root, startPoint);
-    
-    // TERMINATION CASE 
-    if (refToTargetDestinationNode == null || refToStartNode == null) {
-
-      return path; // Target node not found in the tree
-    }
-
-    Queue<TreeNodeForGeneralTreeCreation> queue = new LinkedList<>();
-    
-    // map reduces the code needed for look up and finding values 
-    Map<TreeNodeForGeneralTreeCreation, TreeNodeForGeneralTreeCreation> parentMap = new HashMap<>();
-
-    queue.offer(refToStartNode);
-    parentMap.put(refToStartNode, null);
-
-    // continue loop as long as queue has contents
-    while (!queue.isEmpty()) {
-
-      TreeNodeForGeneralTreeCreation currentNode = queue.poll();
-        
-        
-      if (currentNode == refToTargetDestinationNode) {
-        
-        // Found the target node, construct the path
-        TreeNodeForGeneralTreeCreation reassignedTargetNode = refToTargetDestinationNode;
-        
-        while (reassignedTargetNode != null) {
-
-          path.add(reassignedTargetNode.getNodeData());
-          reassignedTargetNode = parentMap.get(reassignedTargetNode);
-        }
-
-        Collections.reverse(path); // Reverse the path to get root-to-target order
-
-        return path;
-      }
-
-      for (TreeNodeForGeneralTreeCreation child : currentNode.getChildren()) {
-        
-        if ( !parentMap.containsKey(child) ) {
-          queue.offer(child);
-          parentMap.put(child, currentNode);
-        }
-      }
-    }
-
-    return path; // Target node is not reachable from the root
-  }
 
   public int shortestDistance(int nodeData1, int nodeData2) {
 
@@ -266,21 +213,7 @@ public class GeneralTreeCreationReference {
     if (path1.isEmpty() || path2.isEmpty()) {
       return -1; // One or both nodes are not reachable from the root
     }
-
-    // Find the lowest common ancestor between the two nodes
-    int commonAncestor = -1;
-    for (int i = 0; i < Math.min(path1.size(), path2.size()); i++) {
-      
-      Integer path1num = path1.get(i);
-      Integer path2num = path2.get(i);
-      
-      if (!path1num.equals(path2num)) {
-        break;
-      }
-      
-      commonAncestor = path1.get(i);
-    }
-
+    
     // Calculate the distance by summing the lengths of both paths minus 2
     // (subtract 2 to remove the common ancestor and avoid double counting)
     int distance = (path1.size() - 1) + (path2.size() - 1);
@@ -288,27 +221,6 @@ public class GeneralTreeCreationReference {
     return distance;
   }
 
-
-
-  public static void addTestNodesInsideTree(GeneralTreeCreationReference tree) {
-  
-      tree.addNode(1, 2); 
-
-      tree.addNode(1, 3); 
-
-      tree.addNode(1, 4); 
-
-      tree.addNode(3, 5); 
-
-      tree.addNode(3, 6);
-
-      tree.addNode(3, 7);
-
-  }
-
-
-
-  
     
   static String stringRepresentingTree = "";
 
@@ -326,8 +238,6 @@ public class GeneralTreeCreationReference {
   */ 
   public static void getStringRepresentation(TreeNodeForGeneralTreeCreation node) {
 
-    // whoooppseeeieiii 
-    // stringRepresentingTree = ""; WRONG CODE HERE HAHAHAHAHAHA
 
     String padding = "  ".repeat(node.getDepth()) + "|__"; // Create padding based on depth
     stringRepresentingTree += padding + node.getNodeData() + "\n";
@@ -340,6 +250,7 @@ public class GeneralTreeCreationReference {
   }
   
 
+  // this fucntion does not work
   public static int[][] convertToUnorderedPairs(int[] numbers) {
     List<int[]> pairsList = new ArrayList<>();
 
@@ -357,31 +268,86 @@ public class GeneralTreeCreationReference {
   }
 
   public static void testingUserInputConverter() {
-       
-      String numbersRaw = JOptionPane.showInputDialog("enter some numbers to convert into set: 1");
 
-      String[] numbersRawSeparated = numbersRaw.split(" ");
-      
-      GeneralTreeCreationReference testTree;
+    String numbersRaw = JOptionPane.showInputDialog("enter some numbers to convert into set: 1");
 
-      int firstNumber = Integer.parseInt(numbersRawSeparated[0]);
-      testTree = new GeneralTreeCreationReference(firstNumber);
-      int secondNumber = Integer.parseInt(numbersRawSeparated[1]);
+    String[] numbersRawSeparated = numbersRaw.split(" ");
 
-      testTree.addNode(firstNumber, secondNumber);
+    GeneralTreeCreationReference testTree;
 
-      for (int index = 2; index < numbersRawSeparated.length; index = index + 2) {
+    int firstNumber = Integer.parseInt(numbersRawSeparated[0]);
+    testTree = new GeneralTreeCreationReference(firstNumber);
+    int secondNumber = Integer.parseInt(numbersRawSeparated[1]);
 
-        testTree.addNode(
-            Integer.parseInt(numbersRawSeparated[index]),
-            Integer.parseInt(numbersRawSeparated[index + 1]));
-      }
+    testTree.addNode(firstNumber, secondNumber);
 
-      getStringRepresentation(testTree.root);
-      System.out.println(stringRepresentingTree);
-      
-      proceedWithShortestPathBetweenTwoNodesProgramPrompt(testTree);
-      
+    for (int index = 2; index < numbersRawSeparated.length; index = index + 2) {
+
+      testTree.addNode(
+          Integer.parseInt(numbersRawSeparated[index]),
+          Integer.parseInt(numbersRawSeparated[index + 1]));
     }
 
+    getStringRepresentation(testTree.root);
+    System.out.println(stringRepresentingTree);
+
+    proceedWithShortestPathBetweenTwoNodesProgramPrompt(testTree);
+
+  }
+
+  public static ArrayList<int[]> testingUnorderedPairConverter(String userInput) {
+    
+    String[] userInputRaw = userInput.split(" ");
+
+    if (userInputRaw.length < 2) {
+      
+      // terminate this function because the string the user inputed is only
+      // equivalent to one number, there must be 2 or more number to qualify as a query 
+      return null;  
+    }
+
+    ArrayList<int[]> pairsOfQueries = new ArrayList<>();
+
+
+    int arryLength = userInputRaw.length;
+    boolean isConvertionFinish = false;
+
+    int firstNumStartIndex = 0;
+    int firstNumIndex = firstNumStartIndex;
+    int secondNumIndex = 1;
+    
+    while (!isConvertionFinish) {
+
+      // update the firstnumindex 
+      if (firstNumIndex >= arryLength) {
+        
+        // loop should end when the firstNumIndex reaches or exceeds arryLength
+        break;
+      }
+
+      // update the first index value
+      if (secondNumIndex >= arryLength) {
+        firstNumIndex++;
+        secondNumIndex = firstNumIndex + 1;
+        continue;
+      }
+
+      int parent = Integer.parseInt(userInputRaw[firstNumIndex]);
+      int child = Integer.parseInt(userInputRaw[secondNumIndex]);
+      pairsOfQueries.add(
+        new int[] {
+          parent,
+          child
+          });
+
+      secondNumIndex++;
+      
+      if(arryLength <= 2){
+        isConvertionFinish = true;
+      }
+    }
+    
+    return pairsOfQueries;
+  }
+    
 }
