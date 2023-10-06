@@ -3,6 +3,8 @@ package src.generalTreeImplementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class GeneralTree {
 
   public static void main(String[] args) {
@@ -158,7 +160,20 @@ public class GeneralTree {
     }
 
     public static void testingUserInputConverter() {
-        int[] inputArray = { 1, 2, 2, 3 ,3 ,5 };
+       
+      String numbersRaw = JOptionPane.showInputDialog("enter some numbers to convert into set: 1");
+
+      String[] numbersRawSeparated = numbersRaw.split(" ");
+      ArrayList<Integer> numbersOutput = new ArrayList<>(); 
+      for (int index = 0; index < numbersRawSeparated.length; index = index + 2) {
+        
+         ( Integer.parseInt(numbersRawSeparated[0]) , Integer.parseInt(numbersRawSeparated[1]) )
+
+
+      }
+
+
+      int[] inputArray = { 1, 2, 2, 3 ,3 ,5 };
         int[][] pairs = convertToUnorderedPairs(inputArray);
 
         for (int[] pair : pairs) {

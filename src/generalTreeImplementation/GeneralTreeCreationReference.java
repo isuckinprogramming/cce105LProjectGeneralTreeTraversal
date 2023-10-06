@@ -54,16 +54,13 @@ public class GeneralTreeCreationReference {
 
   public static void main(String[] args) {
 
-    testingShortestPath();
+    // testingShortestPath();
+    testingUserInputConverter();
   }
   
-  public static void testingShortestPath() {
+  public static void proceedWithShortestPathBetweenTwoNodesProgramPrompt( GeneralTreeCreationReference tree) {
 
-    GeneralTreeCreationReference tree = new GeneralTreeCreationReference(1); // Creating a tree with root data 1
-
-    addTestNodesInsideTree(tree);
-
-    getStringRepresentation(tree.root);
+    // getStringRepresentation(tree.root);
 
     String input = JOptionPane
         .showInputDialog("GENERAL TREE VISUALIZATION\n" + stringRepresentingTree + "\nInput number to find path inside tree: ");
@@ -71,8 +68,6 @@ public class GeneralTreeCreationReference {
     String[] numbersRaw = input.split(" ");
 
     int[] numToFind = { Integer.parseInt(numbersRaw[0]), Integer.parseInt(numbersRaw[1]) };
-
-    // List<Integer> shortestPath = tree.shortestPathBetweenTwoNodes( numToFind[0], numToFind[1]  );
 
     String outPutMessage = 
       "Shortest Path from : " + numToFind[0] + " and " + numToFind[1] + " is "
@@ -297,29 +292,18 @@ public class GeneralTreeCreationReference {
 
   public static void addTestNodesInsideTree(GeneralTreeCreationReference tree) {
   
-      tree.addNode(1, 2); // Adding a child node with parent 1 and data 2
+      tree.addNode(1, 2); 
 
-      tree.addNode(1, 3); // Adding a child node with parent 1 and data 3
+      tree.addNode(1, 3); 
 
-      tree.addNode(2, 4); // Adding a child node with parent 2 and data 4
+      tree.addNode(1, 4); 
 
-      tree.addNode(3, 5); // Adding a child node with parent 3 and data 5
+      tree.addNode(3, 5); 
 
       tree.addNode(3, 6);
 
-      tree.addNode(3, 10); 
+      tree.addNode(3, 7);
 
-      tree.addNode(4, 6);
-
-      tree.addNode(3, 11); 
-      
-      tree.addNode(3, 6);
-
-      tree.addNode(3, 10);
-
-      tree.addNode(10, 43);
-
-      tree.addNode(11, 25);
   }
 
 
@@ -341,17 +325,63 @@ public class GeneralTreeCreationReference {
    * @param node Starting node to create a string visualization for the tree 
   */ 
   public static void getStringRepresentation(TreeNodeForGeneralTreeCreation node) {
-    
+
     // whoooppseeeieiii 
     // stringRepresentingTree = ""; WRONG CODE HERE HAHAHAHAHAHA
-    
-    String padding = "  ".repeat( node.getDepth() ) + "|__"; // Create padding based on depth
+
+    String padding = "  ".repeat(node.getDepth()) + "|__"; // Create padding based on depth
     stringRepresentingTree += padding + node.getNodeData() + "\n";
-   
+
     for (TreeNodeForGeneralTreeCreation child : node.getChildren()) {
 
-      getStringRepresentation( child ); // Recursively concatenate message with the print data of the children of the node.
+      getStringRepresentation(child); // Recursively concatenate message with the print data of the children of the node.
     }
     // BASE CASE - Recursion stops when there are no more child nodes to access and call upon this method 
   }
+  
+
+  public static int[][] convertToUnorderedPairs(int[] numbers) {
+    List<int[]> pairsList = new ArrayList<>();
+
+    for (int firstNumIndex = 0; firstNumIndex < numbers.length; firstNumIndex = firstNumIndex + 2) {
+
+      int[] pair = { numbers[firstNumIndex], numbers[firstNumIndex + 1] };
+      pairsList.add(pair);
+
+    }
+
+    int[][] pairsArray = new int[pairsList.size()][2];
+    pairsList.toArray(pairsArray);
+
+    return pairsArray;
+  }
+
+  public static void testingUserInputConverter() {
+       
+      String numbersRaw = JOptionPane.showInputDialog("enter some numbers to convert into set: 1");
+
+      String[] numbersRawSeparated = numbersRaw.split(" ");
+      
+      GeneralTreeCreationReference testTree;
+
+      int firstNumber = Integer.parseInt(numbersRawSeparated[0]);
+      testTree = new GeneralTreeCreationReference(firstNumber);
+      int secondNumber = Integer.parseInt(numbersRawSeparated[1]);
+
+      testTree.addNode(firstNumber, secondNumber);
+
+      for (int index = 2; index < numbersRawSeparated.length; index = index + 2) {
+
+        testTree.addNode(
+            Integer.parseInt(numbersRawSeparated[index]),
+            Integer.parseInt(numbersRawSeparated[index + 1]));
+      }
+
+      getStringRepresentation(testTree.root);
+      System.out.println(stringRepresentingTree);
+      
+      proceedWithShortestPathBetweenTwoNodesProgramPrompt(testTree);
+      
+    }
+
 }
