@@ -52,36 +52,24 @@ public class GeneralTree {
 
   public static void main(String[] args) {
 
-    // NOTE : DO NOT INCLUDE IN CODE PRESENTATION 
-    // test node data from problem
-    //1 2 1 3 1 4 3 5 3 6 3 7                   nodes = 7 
-    //1 2 1 3 1 4 3 5 3 6 3 7 3 8               nodes = 8
-    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9           nodes = 9             input data : 1 2 3 4 5 6 7 8 9      result : total time (millis) : 3016  pairs : 36 
-    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10      nodes = 10            input data : 1 2 3 4 5 5 7 8 9 10   result : total time (millis) : 4706 pairs : 45
-    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11     nodes = 11        input data : 1 2 3 4 5 6 7 8 9 10 11 result : total time (millis) : 7005 pairs : 55
-    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11 5 12     nodes = 12   input data : 1 2 3 4 5 6 7 8 9 10 11 12 result: total time (millis) : 10833 pairs : 66
-    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11 5 12 2 13     nodes = 13   input data : 1 2 3 4 5 6 7 8 9 10 11 12 13 result: total time (millis) : 14902 pairs : 78
-    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11 5 12 2 13 9 14    nodes = 14   input data : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 result: total time (millis) : 21286 pairs : 91
-    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11 5 12 2 13 9 14 7 15   nodes = 15   input data : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 result: 29386 pairs : total time (millis) : 29386 pairs : 105
-    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11 5 12 2 13 9 14 7 15 8 16   nodes = 16   input data : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 result: total time (millis) : 39466 pairs : 120
-
-    // : TEST UPDATED 
-    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11 5 12 2 13 9 14 7 15 8 16 9 17  nodes = 17   
-    // input data : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 
-    // result: total time (millis) : 17 pairs : 136 Total value : 51808
-
-    //1 2 1 3 1 4 3 5 3 6 3 7 3 8 2 9 2 10 4 11 5 12 2 13 9 14 7 15 8 16 9 17 10 18   nodes = 18
-    // input data : 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 
-    // result: total time (millis) : 24 pairs : 153Total value : 66712
-
     programStart();
   }
+
+  public static void setGeneralTreeCreationString(String defaultContent) {
+
+    treeStringRepresentation = "";
+  }
+
+  public static String getStringRepresentationOfTree() {
+    return treeStringRepresentation;
+  }
+ 
   
-  
+
   public static void programStart() {
 
     // get String from user, instructions for creating a general tree. 
-    String numbersRaw = JOptionPane.showInputDialog("enter some numbers to convert into set: ");
+    String numbersRaw = JOptionPane.showInputDialog("enter some numbers to convert into a general tree: ");
 
     // construct a general tree using String from user 
     GeneralTree generalTree = treeCreation(numbersRaw);
@@ -102,7 +90,7 @@ public class GeneralTree {
     String userInputRawQueries = JOptionPane
       .showInputDialog( message );
 
-    calculateFormulaResultWithShortestDistanceFromTwoNodes(generalTree, userInputRawQueries);
+    calculateFormulaResultWithShortestDistanceFromTwoNodes(generalTree, userInputRawQueries, true);
   }
 
   public static GeneralTree treeCreation(String treeCreationString ) {
@@ -187,7 +175,8 @@ public class GeneralTree {
 
   public static void calculateFormulaResultWithShortestDistanceFromTwoNodes(
       GeneralTree tree,
-      String userInputRawQueries) {
+      String userInputRawQueries,
+      boolean printConsoleData) {
 
     ArrayList<int[]> unorderedPairQuery = createUnorderedPairsOfIntNumbersFromString(userInputRawQueries);
 
@@ -205,9 +194,14 @@ public class GeneralTree {
       long expressionResult = ( query[0] * query[1] * distance ) % 1000000007;
       totalResult += expressionResult;
       // concatenate output message
-      consoleCalculationProcessMessage += "Shortest Distance of : " + query[0] + " and " + query[1] +
+
+      if (printConsoleData) {
+        consoleCalculationProcessMessage += 
+         "Shortest Distance of : " + query[0] + " and " + query[1] +
           " is " + distance + " : Expression Result ( (" + query[0] + " * " + query[1] + " * " + distance
           + " ) % 1,000,000,007( or 10^9 + 7) ) = " + expressionResult + "\n";
+      
+      }
       long endTime = System.currentTimeMillis();
       totaltime += endTime - startTime;
    
@@ -216,17 +210,17 @@ public class GeneralTree {
     String guiProcessMainDetailsMessage = " THE TOTAL VALUE FROM PROBLEM CALCULATED THROUGH FORMULA OF ( (node Start * node End * shortest distance ) % 10^9 + 7 ) : " + totalResult + "\n" + treeStringRepresentation;
     JOptionPane.showMessageDialog(null, guiProcessMainDetailsMessage);
     
-    System.out.println(
-      consoleCalculationProcessMessage +
+    consoleCalculationProcessMessage += 
       "total time (millis) : " + totaltime +
       "  pairs : " + numOfTotalPairs +
-      " Total value : " + totalResult
-    );
+      " Total value : " + totalResult;
+      
+    System.out.println( consoleCalculationProcessMessage );
   }
 
 
 
-  private TreeNodeForGeneralTreeCreation root;
+  public TreeNodeForGeneralTreeCreation root;
 
     public GeneralTree(int rootData) {
         root = new TreeNodeForGeneralTreeCreation(-1, rootData, 0); // Assuming -1 as the parent of the root node
@@ -271,9 +265,11 @@ public class GeneralTree {
       }
 
       for (TreeNodeForGeneralTreeCreation child : nodeToSearchWithin.getChildren()) {
-        TreeNodeForGeneralTreeCreation found = findNode(child, data);
-        if (found != null) {
-          return found;
+        
+        TreeNodeForGeneralTreeCreation childNodeWithMatchingData = findNode(child, data);
+        
+        if (childNodeWithMatchingData != null) {
+          return childNodeWithMatchingData;
         }
       }
       
