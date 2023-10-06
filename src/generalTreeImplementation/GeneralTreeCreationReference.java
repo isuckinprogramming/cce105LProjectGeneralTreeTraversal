@@ -64,6 +64,7 @@ public class GeneralTreeCreationReference {
     addTestNodesInsideTree(tree);
 
     getStringRepresentation(tree.root);
+
     String input = JOptionPane
         .showInputDialog("GENERAL TREE VISUALIZATION\n" + stringRepresentingTree + "\nInput number to find path inside tree: ");
 
@@ -195,6 +196,8 @@ public class GeneralTreeCreationReference {
       return path; // Target node is not reachable from the root
     }
 
+    // will not work - tried to create a custom of the code generated from chat gpt but I fucked up because I don't 
+    // know how the code operates under the hood
     public List<Integer> shortestPathBetweenTwoNodes(int startPoint, int endPoint) {
     
     List<Integer> path = new ArrayList<>();
@@ -339,7 +342,8 @@ public class GeneralTreeCreationReference {
   */ 
   public static void getStringRepresentation(TreeNodeForGeneralTreeCreation node) {
     
-    stringRepresentingTree = "";
+    // whoooppseeeieiii 
+    // stringRepresentingTree = ""; WRONG CODE HERE HAHAHAHAHAHA
     
     String padding = "  ".repeat( node.getDepth() ) + "|__"; // Create padding based on depth
     stringRepresentingTree += padding + node.getNodeData() + "\n";
