@@ -80,22 +80,27 @@ public class GeneralTree {
   
   public static void programStart() {
 
-    
+    // get String from user, instructions for creating a general tree. 
     String numbersRaw = JOptionPane.showInputDialog("enter some numbers to convert into set: ");
 
+    // construct a general tree using String from user 
     GeneralTree generalTree = treeCreation(numbersRaw);
 
+    // create the string to represent the tree visually through text
     prepareTreeStringRepresentation(generalTree.root);
+
+    // present the tree to the user through console
     System.out.println(treeStringRepresentation);
 
-
+    //Message to Ask user for Input, present instructions for user
+    String message = 
+    "GENERAL TREE VISUALIZATION\n" + treeStringRepresentation +
+    "\nInput numbers in pair to find their shortest distance inside tree. " +
+    "\nThe first pair of numbers will be considered as the parent root node and the child node." +
+    "\nExample : 1 2 = pair( parent 1, child 2 ) ; 1 2 1 3 = pair(parent 1, child 2), pair( parent 1, child 3) ";
+        
     String userInputRawQueries = JOptionPane
-      .showInputDialog(
-        "GENERAL TREE VISUALIZATION\n" + treeStringRepresentation +
-        "\nInput numbers in pair to find their shortest distance inside tree. " +
-        "\nThe first pair of numbers will be considered as the parent root node and the child node." +
-        "\nExample : 1 2 = pair( parent 1, child 2 ) ; 1 2 1 3 = pair(parent 1, child 2), pair( parent 1, child 3) "  
-      );
+      .showInputDialog( message );
 
     calculateFormulaResultWithShortestDistanceFromTwoNodes(generalTree, userInputRawQueries);
   }
