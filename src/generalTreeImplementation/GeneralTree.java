@@ -65,43 +65,42 @@ public class GeneralTree {
   }
  
   
+// flow chart created
+public static void programStart() {
 
-  public static void programStart() {
+  // get String from user, instructions for creating a general tree. 
+  String numbersRaw = JOptionPane.showInputDialog("enter some numbers to convert into a general tree: ");
 
-    // get String from user, instructions for creating a general tree. 
-    String numbersRaw = JOptionPane.showInputDialog("enter some numbers to convert into a general tree: ");
+  // construct a general tree using String from user 
+  GeneralTree generalTree = treeCreation(numbersRaw);
 
-    // construct a general tree using String from user 
-    GeneralTree generalTree = treeCreation(numbersRaw);
+  // create the string to represent the tree visually through text
+  prepareTreeStringRepresentation(generalTree.root);
 
-    // create the string to represent the tree visually through text
-    prepareTreeStringRepresentation(generalTree.root);
+  // present the tree to the user through console
+  System.out.println(treeStringRepresentation);
 
-    // present the tree to the user through console
-    System.out.println(treeStringRepresentation);
+  //Message to Ask user for Input, present instructions for user
+  String message = "GENERAL TREE VISUALIZATION\n" + treeStringRepresentation +
+      "\nInput numbers in pair to find their shortest distance inside tree. " +
+      "\nThe first pair of numbers will be considered as the parent root node and the child node." +
+      "\nExample : 1 2 = pair( parent 1, child 2 ) ; 1 2 1 3 = pair(parent 1, child 2), pair( parent 1, child 3) ";
 
-    //Message to Ask user for Input, present instructions for user
-    String message = 
-    "GENERAL TREE VISUALIZATION\n" + treeStringRepresentation +
-    "\nInput numbers in pair to find their shortest distance inside tree. " +
-    "\nThe first pair of numbers will be considered as the parent root node and the child node." +
-    "\nExample : 1 2 = pair( parent 1, child 2 ) ; 1 2 1 3 = pair(parent 1, child 2), pair( parent 1, child 3) ";
-        
-    String userInputRawQueries = JOptionPane
-      .showInputDialog( message );
+  String userInputRawQueries = JOptionPane
+      .showInputDialog(message);
 
-    calculateFormulaResultWithShortestDistanceFromTwoNodes(generalTree, userInputRawQueries, true);
-  }
+  calculateFormulaResultWithShortestDistanceFromTwoNodes(generalTree, userInputRawQueries, true);
+}
 
-  public static GeneralTree treeCreation(String treeCreationString ) {
+  // flow chart created
+  public static GeneralTree treeCreation(String treeCreationString) {
 
     String[] numbersRawSeparated = treeCreationString.split(" ");
-    
+
     // terminate function if the numbers inside is only one number 
-    if( numbersRawSeparated.length <= 1 ){
+    if (numbersRawSeparated.length <= 1) {
       return null;
     }
-
 
     int firstNumber = Integer.parseInt(numbersRawSeparated[0]);
     GeneralTree createdGeneralTree = new GeneralTree(firstNumber);
@@ -119,6 +118,7 @@ public class GeneralTree {
     return createdGeneralTree;
   }
 
+  // FLOWCHART CREATED
   public static ArrayList<int[]> createUnorderedPairsOfIntNumbersFromString(String userInput) {
     
     String[] userInputRaw = userInput.split(" ");
@@ -186,7 +186,7 @@ public class GeneralTree {
     long totalResult = 0;
     
     String consoleCalculationProcessMessage = "";
-    
+
     for (int[] query : unorderedPairQuery) {
 
       long startTime = System.currentTimeMillis();
