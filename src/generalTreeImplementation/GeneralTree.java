@@ -173,7 +173,7 @@ public static void programStart() {
 
 
 
-  public static void calculateFormulaResultWithShortestDistanceFromTwoNodes(
+  public static long[] calculateFormulaResultWithShortestDistanceFromTwoNodes(
       GeneralTree tree,
       String userInputRawQueries,
       boolean printConsoleData) {
@@ -181,7 +181,7 @@ public static void programStart() {
     ArrayList<int[]> unorderedPairQuery = createUnorderedPairsOfIntNumbersFromString(userInputRawQueries);
 
     // program time calculation and test cases variables
-    long totaltime = 0;
+     long totaltime = 0;
     int numOfTotalPairs = unorderedPairQuery.size();
     long totalResult = 0;
     long totalResultFromNodeMultiplication = 0;
@@ -210,7 +210,7 @@ public static void programStart() {
       }
       long endTime = System.currentTimeMillis();
       totaltime += endTime - startTime;
-   
+      
     }
     
     String guiProcessMainDetailsMessage = " THE TOTAL VALUE FROM PROBLEM CALCULATED THROUGH FORMULA OF ( (node Start * node End * shortest distance ) % 10^9 + 7 ) : " + totalResultFromNodeMultiplication % 1000000007 + "\n" + treeStringRepresentation;
@@ -219,9 +219,12 @@ public static void programStart() {
     consoleCalculationProcessMessage += 
       "total time (millis) : " + totaltime +
       "  pairs : " + numOfTotalPairs +
-      " Total value : " + totalResult;
+      " Total value : " + totalResultFromNodeMultiplication % 1000000007;
       
-    System.out.println( consoleCalculationProcessMessage );
+    System.out.println(consoleCalculationProcessMessage);
+    
+    
+    return new long[] { totaltime, numOfTotalPairs, totalResultFromNodeMultiplication % ( 1000000000 + 7 )  };
   }
 
 
@@ -284,62 +287,63 @@ public static void programStart() {
     }
 
     
-    
-    public List<Integer> shortestPathFromRooT(int targetData) {
-      List<Integer> path = new ArrayList<>();
+      
+      public List<Integer> shortestPathFromRooT(int targetData) {
+        List<Integer> path = new ArrayList<>();
 
-      // the rootnode will be used as the base for finding and searching the data
-      // the starting node can be changed but I haven't tested how yet
-      TreeNodeForGeneralTreeCreation refToTargetDestinationNode = findNode(root, targetData);
+        // the rootnode will be used as the base for finding and searching the data
+        // the starting node can be changed but I haven't tested how yet
+        TreeNodeForGeneralTreeCreation refToTargetDestinationNode = findNode(root, targetData);
 
-      // TERMINATION CASE 
-      if (refToTargetDestinationNode == null) {
+        // TERMINATION CASE 
+        if (refToTargetDestinationNode == null) {
 
-        return path; // Target node not found in the tree
-      }
-
-      Queue<TreeNodeForGeneralTreeCreation> queue = new LinkedList<>();
-
-      // map reduces the code needed for look up and finding values 
-      Map<TreeNodeForGeneralTreeCreation, TreeNodeForGeneralTreeCreation> parentMap = new HashMap<>();
-
-      queue.offer(root);
-      parentMap.put(root, null);
-
-      // continue loop as long as queue has contents
-      while (!queue.isEmpty()) {
-
-        TreeNodeForGeneralTreeCreation currentNode = queue.poll();
-
-        if (currentNode == refToTargetDestinationNode) {
-
-          // Found the target node, construct the path
-          TreeNodeForGeneralTreeCreation reassignedTargetNode = refToTargetDestinationNode;
-
-          while (reassignedTargetNode != null) {
-
-            path.add(reassignedTargetNode.getNodeData());
-            reassignedTargetNode = parentMap.get(reassignedTargetNode);
-          }
-
-          Collections.reverse(path); // Reverse the path to get root-to-target order
-
-          return path;
+          return path; // Target node not found in the tree
         }
 
-        for (TreeNodeForGeneralTreeCreation child : currentNode.getChildren()) {
+        Queue<TreeNodeForGeneralTreeCreation> queue = new LinkedList<>();
 
-          if (!parentMap.containsKey(child)) {
-            queue.offer(child);
-            parentMap.put(child, currentNode);
+        // map reduces the code needed for look up and finding values 
+        Map<TreeNodeForGeneralTreeCreation, TreeNodeForGeneralTreeCreation> parentMap = new HashMap<>();
+
+        queue.offer(root);
+        parentMap.put(root, null);
+
+        // continue loop as long as queue has contents
+        while (!queue.isEmpty()) {
+
+          TreeNodeForGeneralTreeCreation currentNode = queue.poll();
+
+          if (currentNode == refToTargetDestinationNode) {
+
+            // Found the target node, construct the path
+            TreeNodeForGeneralTreeCreation reassignedTargetNode = refToTargetDestinationNode;
+
+            while (reassignedTargetNode != null) {
+
+              path.add(reassignedTargetNode.getNodeData());
+              reassignedTargetNode = parentMap.get(reassignedTargetNode);
+            }
+
+            Collections.reverse(path); // Reverse the path to get root-to-target order
+
+            return path;
+          }
+
+          for (TreeNodeForGeneralTreeCreation child : currentNode.getChildren()) {
+
+            if (!parentMap.containsKey(child)) {
+              queue.offer(child);
+              parentMap.put(child, currentNode);
+            }
           }
         }
+
+        return path; // Target node is not reachable from the root
       }
 
-      return path; // Target node is not reachable from the root
-    }
 
-
+    // flowchart created
   public int shortestDistance(int nodeData1, int nodeData2) {
 
     List<Integer> path1 = shortestPathFromRooT(nodeData1);

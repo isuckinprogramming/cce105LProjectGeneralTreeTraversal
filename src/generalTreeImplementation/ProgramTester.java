@@ -1,6 +1,8 @@
 package src.generalTreeImplementation;
 
-import javax.management.Query;
+import java.util.ArrayList;
+
+import javax.crypto.AEADBadTagException;
 
 public class ProgramTester {
   
@@ -123,39 +125,78 @@ public class ProgramTester {
     //     }
     // };
 
+      
     // test();
     // for (String[] treeNodesAndQueryPair  :  allTestData){
     //   programTestCases(treeNodesAndQueryPair[0], treeNodesAndQueryPair[1]);
     // }
-  
-    for (int i = 25; i < 100_000; i *= 2 ) {
 
-      Object[] content = generateStringForTreeNodeAndQuery(i);
-        System.out.println("tree nodes : " + (int ) content[2]);
-        programTestCases((String) content[0], (String) content[1]);
-        
-      }
+    int numberOfTimesToLoop = 1000; 
+    // for (int i = 25; i < 100_000; i *= 2) {
+    ArrayList<long[]> allTestCaseData = new ArrayList<>();
+    for (
+      int baseValueForParam = 25; 
+      baseValueForParam < numberOfTimesToLoop; 
+      baseValueForParam *= 2 ) {
 
+      // content will have a string and an int  
+      Object[] content = generateStringForTreeNodeAndQuery(
+        baseValueForParam
+      );
+
+      String treeNodesInStringFormat = (String) content[0];
+      String queryForTreeNodesShortestDistanceAndCalculation = (String) content[1];
+      int numberOfNodes = (int) content[2];
+
+      
+      // print number of nodes out
+      System.out.println("\ntree nodes : " + numberOfNodes);
+      
+      // run the start method of the program with the auto-generated data 
+      // for the tree nodes and the user query for the tree, so no user input required
+      long[] currentTestCaseData = programTestCases(
+          treeNodesInStringFormat,   
+          queryForTreeNodesShortestDistanceAndCalculation
+      );
+
+      allTestCaseData.add(
+        new long[]{
+          currentTestCaseData[0],
+          currentTestCaseData[1],
+          currentTestCaseData[2],
+          numberOfNodes
+        } 
+      );
+
+    }
+    tableDisplayer.displayAllDataFromTestToJTable(allTestCaseData);
   }
 
   
-  public static void programTestCases(
+  public static long[] programTestCases(
       String treeNodeData,
       String query) {
 
+    
+    // Commented out code to print the tree nodes and query 
     // System.out.println(
-    //     "TREE NODES: " + treeNodeData + "\nQuery: " + query);
+    // "TREE NODES: " + treeNodeData + "\nQuery: " + query);
+
     // construct a general tree using String from user
     GeneralTree generalTree = GeneralTree.treeCreation(treeNodeData);
 
     // create the string to represent the tree visually through text
     // GeneralTree.prepareTreeStringRepresentation(generalTree.root);
 
-    // present the tree to the user through console
+    // present the tree to the user through console, the purpose of this 
+    // method is to test the performance of the code. Printing the 
+    // tree representation with a large data set for tree nodes and queries 
+    // will only make the messages in the console messy. So I commented this
+    // portion of code
     // System.out.println(GeneralTree.getStringRepresentationOfTree());
     ;
 
-    GeneralTree.calculateFormulaResultWithShortestDistanceFromTwoNodes(generalTree, query, false);
+    return GeneralTree.calculateFormulaResultWithShortestDistanceFromTwoNodes(generalTree, query, false);
     // treeStringRepresentation = "";
     // GeneralTree.setGeneralTreeCreationString("");
   }
@@ -165,6 +206,7 @@ public class ProgramTester {
     String query = "";
     String treeNodeString = "";
 
+
     int maxNumbers = basenumber;
     for (int i = 1; i < maxNumbers; i++) {
 
@@ -172,14 +214,13 @@ public class ProgramTester {
     }
 
     int treeNodeCount = 1;
-    for( int i = 1; i < (maxNumbers/2); i++  ){
-      
+    for (int i = 1; i < (maxNumbers / 2); i++) {
+
       treeNodeString += i + " " + (i + 1) + " ";
       treeNodeCount++;
     }
-
+    
     // System.out.println(query + "\n" + treeNodeString);
     return new Object[] { treeNodeString, query, treeNodeCount };
-
   }
 }
