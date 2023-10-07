@@ -340,37 +340,51 @@ public static void programStart() {
     }
 
 
-  public int shortestDistance(int nodeData1, int nodeData2) {
+    public int shortestDistance(int nodeData1, int nodeData2) {
+      TreeNodeForGeneralTreeCreation node1 = findNode(root, nodeData1);
+      TreeNodeForGeneralTreeCreation node2 = findNode(root, nodeData2);
 
-    List<Integer> path1 = shortestPathFromRooT(nodeData1);
-    List<Integer> path2 = shortestPathFromRooT(nodeData2);
-
-    if (path1.isEmpty() || path2.isEmpty()) {
-      return -1; // One or both nodes are not reachable from the root
-    }
-
-    // Find the lowest common ancestor between the two nodes
-
-    int commonAncestorIndex = 0;
-    for (int i = 0; i < Math.min(path1.size(), path2.size()); i++) {
-
-      Integer path1num = path1.get(i);
-      Integer path2num = path2.get(i);
-
-      // stop the loop increasing index of the common ancestor closest to 
-      // both nodes in the function for trying to find the shortest distance between them 
-      if (!path1num.equals(path2num)) {
-        break;
+      if (node1 == null || node2 == null) {
+        return -1; // One or both nodes not found in the tree
       }
 
-      commonAncestorIndex++;
-    }
-  
-    // Calculate the distance by summing the lengths of both paths minus the index of their common ancestor
-    int distance = (path1.size() - commonAncestorIndex) + (path2.size() - commonAncestorIndex);
+      TreeNodeForGeneralTreeCreation lca = findLowestCommonAncestor(root, node1, node2);
 
-    return distance;
-  }
+      if (lca == null) {
+        return -1; // Lowest common ancestor not found
+      }
+
+      int distance1 = node1.getDepth() - lca.getDepth();
+      int distance2 = node2.getDepth() - lca.getDepth();
+
+      return distance1 + distance2;
+    }
+
+    private TreeNodeForGeneralTreeCreation findLowestCommonAncestor(TreeNodeForGeneralTreeCreation root,
+        TreeNodeForGeneralTreeCreation node1, TreeNodeForGeneralTreeCreation node2) {
+      if (root == null || root == node1 || root == node2) {
+        return root;
+      }
+
+      List<TreeNodeForGeneralTreeCreation> children = root.getChildren();
+      TreeNodeForGeneralTreeCreation lca = null;
+
+      for (TreeNodeForGeneralTreeCreation child : children) {
+        TreeNodeForGeneralTreeCreation childLca = findLowestCommonAncestor(child, node1, node2);
+
+        if (childLca != null) {
+          if (lca == null) {
+            lca = childLca;
+          } else {
+            // If both nodes are found in different subtrees of the current root,
+            // then the current root is the lowest common ancestor.
+            return root;
+          }
+        }
+      }
+
+      return lca;
+    }
 
     
   public static String treeStringRepresentation = "";
