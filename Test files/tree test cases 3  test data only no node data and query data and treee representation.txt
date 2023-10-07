@@ -1,0 +1,10 @@
+PS C:\Users\Borgs\Documents\programmingFiles\cce105LProjectGeneralTreeTraversal>  c:; cd 'c:\Users\Borgs\Documents\programmingFiles\cce105LProjectGeneralTreeTraversal'; & 'C:\Program Files\Eclipse Adoptium\jdk-17.0.6.10-hotspot\bin\java.exe' '-XX:+ShowCodeDetailsInExceptionMessages' '-cp' 'C:\Users\Borgs\AppData\Roaming\Code\User\workspaceStorage\9c9be586c45547a2a657983419cf72cf\redhat.java\jdt_ws\cce105LProjectGeneralTreeTraversal_86c7bbd3\bin' 'src.generalTreeImplementation.ProgramTester'
+total time (millis) : 3  pairs : 276 Total value : -651
+total time (millis) : 5  pairs : 1176 Total value : 909850
+total time (millis) : 19  pairs : 4851 Total value : 40225325
+total time (millis) : 65  pairs : 19701 Total value : 1473901275
+total time (millis) : 443  pairs : 79401 Total value : 50224605050
+total time (millis) : 3303  pairs : 318801 Total value : 1656730420100
+PS C:\Users\Borgs\Documents\programmingFiles\cce105LProjectGeneralTreeTraversal>
+
+

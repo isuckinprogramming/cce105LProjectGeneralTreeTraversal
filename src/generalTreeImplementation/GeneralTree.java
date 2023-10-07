@@ -186,6 +186,7 @@ public class GeneralTree {
     long totalResult = 0;
     
     String consoleCalculationProcessMessage = "";
+    
     for (int[] query : unorderedPairQuery) {
 
       long startTime = System.currentTimeMillis();

@@ -128,9 +128,12 @@ public class ProgramTester {
     //   programTestCases(treeNodesAndQueryPair[0], treeNodesAndQueryPair[1]);
     // }\
   
-      for(int i = 25; i < 250; i *= 2   ) {
-        String[] content = generateStringForTreeNodeAndQuery(i);
-        programTestCases(content[0],content[1]);
+    for (int i = 25; i < 100_000; i *= 2 ) {
+
+      Object[] content = generateStringForTreeNodeAndQuery(i);
+        System.out.println("tree nodes : " + (int ) content[2]);
+        programTestCases((String) content[0], (String) content[1]);
+        
       }
 
   }
@@ -140,41 +143,43 @@ public class ProgramTester {
       String treeNodeData,
       String query) {
 
-    System.out.println(
-        "TREE NODES: " + treeNodeData + "\nQuery: " + query);
+    // System.out.println(
+    //     "TREE NODES: " + treeNodeData + "\nQuery: " + query);
     // construct a general tree using String from user
     GeneralTree generalTree = GeneralTree.treeCreation(treeNodeData);
 
     // create the string to represent the tree visually through text
-    GeneralTree.prepareTreeStringRepresentation(generalTree.root);
+    // GeneralTree.prepareTreeStringRepresentation(generalTree.root);
 
     // present the tree to the user through console
-    System.out.println(GeneralTree.getStringRepresentationOfTree());
+    // System.out.println(GeneralTree.getStringRepresentationOfTree());
     ;
 
     GeneralTree.calculateFormulaResultWithShortestDistanceFromTwoNodes(generalTree, query, false);
     // treeStringRepresentation = "";
-    GeneralTree.setGeneralTreeCreationString("");
+    // GeneralTree.setGeneralTreeCreationString("");
   }
 
-  public static String[] generateStringForTreeNodeAndQuery( int basenumber) {
+  public static Object[] generateStringForTreeNodeAndQuery( int basenumber) {
 
     String query = "";
     String treeNodeString = "";
 
     int maxNumbers = basenumber;
-    for (int i = 1; i < maxNumbers ; i++) {
+    for (int i = 1; i < maxNumbers; i++) {
 
       query += i + " ";
     }
 
+    int treeNodeCount = 1;
     for( int i = 1; i < (maxNumbers/2); i++  ){
       
-      treeNodeString += i + " " + ( i + 1) + " " ;
+      treeNodeString += i + " " + (i + 1) + " ";
+      treeNodeCount++;
     }
 
     // System.out.println(query + "\n" + treeNodeString);
-    return new String[] { treeNodeString, query };
+    return new Object[] { treeNodeString, query, treeNodeCount };
 
   }
 }

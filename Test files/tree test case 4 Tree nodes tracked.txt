@@ -1,0 +1,57 @@
+
+Test case without tracking tree node numbers
+
+1st run
+PS C:\Users\Borgs\Documents\programmingFiles\cce105LProjectGeneralTreeTraversal>  c:; cd 'c:\Users\Borgs\Documents\programmingFiles\cce105LProjectGeneralTreeTraversal'; & 'C:\Program Files\Eclipse Adoptium\jdk-17.0.6.10-hotspot\bin\java.exe' '-XX:+ShowCodeDetailsInExceptionMessages' '-cp' 'C:\Users\Borgs\AppData\Roaming\Code\User\workspaceStorage\9c9be586c45547a2a657983419cf72cf\redhat.java\jdt_ws\cce105LProjectGeneralTreeTraversal_86c7bbd3\bin' 'src.generalTreeImplementation.ProgramTester'
+total time (millis) : 3  pairs : 276 Total value : -651
+total time (millis) : 3  pairs : 1176 Total value : 909850
+total time (millis) : 18  pairs : 4851 Total value : 40225325
+total time (millis) : 60  pairs : 19701 Total value : 1473901275
+total time (millis) : 438  pairs : 79401 Total value : 50224605050
+total time (millis) : 3461  pairs : 318801 Total value : 1656730420100
+total time (millis) : 28521  pairs : 1277601 Total value : 53776777679948
+total time (millis) : 246501  pairs : 5115201 Total value : 253008046565662
+
+
+2nd run
+
+PS C:\Users\Borgs\Documents\programmingFiles\cce105LProjectGeneralTreeTraversal>  c:; cd 'c:\Users\Borgs\Documents\programmingFiles\cce105LProjectGeneralTreeTraversal'; & 'C:\Program Files\Eclipse Adoptium\jdk-17.0.6.10-hotspot\bin\java.exe' '-XX:+ShowCodeDetailsInExceptionMessages' '-cp' 'C:\Users\Borgs\AppData\Roaming\Code\User\workspaceStorage\9c9be586c45547a2a657983419cf72cf\redhat.java\jdt_ws\cce105LProjectGeneralTreeTraversal_86c7bbd3\bin' 'src.generalTreeImplementation.ProgramTester'
+total time (millis) : 2  pairs : 276 Total value : -651
+total time (millis) : 6  pairs : 1176 Total value : 909850
+total time (millis) : 19  pairs : 4851 Total value : 40225325
+total time (millis) : 66  pairs : 19701 Total value : 1473901275
+total time (millis) : 447  pairs : 79401 Total value : 50224605050        
+total time (millis) : 3315  pairs : 318801 Total value : 1656730420100    
+total time (millis) : 29904  pairs : 1277601 Total value : 53776777679948 
+total time (millis) : 252350  pairs : 5115201 Total value : 253008046565662
+
+
+Test case where Nodes inside tree is counted
+3rd run
+
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\Users\Borgs\Documents\programmingFiles\cce105LProjectGeneralTreeTraversal>  & 'C:\Program Files\Eclipse Adoptium\jdk-17.0.6.10-hotspot\bin\java.exe' '-XX:+ShowCodeDetailsInExceptionMessages' '-cp' 'C:\Users\Borgs\AppData\Roaming\Code\User\workspaceStorage\9c9be586c45547a2a657983419cf72cf\redhat.java\jdt_ws\cce105LProjectGeneralTreeTraversal_86c7bbd3\bin' 'src.generalTreeImplementation.ProgramTester'
+tree nodes : 12
+total time (millis) : 3  pairs : 276 Total value : -651
+tree nodes : 25
+total time (millis) : 6  pairs : 1176 Total value : 909850
+tree nodes : 50
+total time (millis) : 18  pairs : 4851 Total value : 40225325
+tree nodes : 100
+total time (millis) : 69  pairs : 19701 Total value : 1473901275
+tree nodes : 200
+total time (millis) : 453  pairs : 79401 Total value : 50224605050
+tree nodes : 400
+total time (millis) : 3648  pairs : 318801 Total value : 1656730420100
+tree nodes : 800
+total time (millis) : 30230  pairs : 1277601 Total value : 53776777679948
+tree nodes : 1600
+total time (millis) : 259836  pairs : 5115201 Total value : 253008046565662
+tree nodes : 3200
+
+
+
