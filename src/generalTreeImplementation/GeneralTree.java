@@ -184,7 +184,7 @@ public static void programStart() {
     long totaltime = 0;
     int numOfTotalPairs = unorderedPairQuery.size();
     long totalResult = 0;
-    
+    long totalResultFromNodeMultiplication = 0;
     String consoleCalculationProcessMessage = "";
 
     for (int[] query : unorderedPairQuery) {
@@ -192,7 +192,12 @@ public static void programStart() {
       long startTime = System.currentTimeMillis();
 
       int distance = tree.shortestDistance(query[0], query[1]);
-      long expressionResult = ( query[0] * query[1] * distance ) % 1000000007;
+      
+      long allNodesMultiplied = query[0] * query[1] * distance;
+      totalResultFromNodeMultiplication += allNodesMultiplied;
+
+      long expressionResult =  allNodesMultiplied % 1000000007;
+      
       totalResult += expressionResult;
       // concatenate output message
 
@@ -208,7 +213,7 @@ public static void programStart() {
    
     }
     
-    String guiProcessMainDetailsMessage = " THE TOTAL VALUE FROM PROBLEM CALCULATED THROUGH FORMULA OF ( (node Start * node End * shortest distance ) % 10^9 + 7 ) : " + totalResult + "\n" + treeStringRepresentation;
+    String guiProcessMainDetailsMessage = " THE TOTAL VALUE FROM PROBLEM CALCULATED THROUGH FORMULA OF ( (node Start * node End * shortest distance ) % 10^9 + 7 ) : " + totalResultFromNodeMultiplication % 1000000007 + "\n" + treeStringRepresentation;
     JOptionPane.showMessageDialog(null, guiProcessMainDetailsMessage);
     
     consoleCalculationProcessMessage += 
@@ -337,13 +342,6 @@ public static void programStart() {
 
   public int shortestDistance(int nodeData1, int nodeData2) {
 
-    TreeNodeForGeneralTreeCreation node1 = findNode(root, nodeData1);
-    TreeNodeForGeneralTreeCreation node2 = findNode(root, nodeData2);
-
-    if (node1 == null || node2 == null) {
-      return -1; // One or both nodes not found in the tree
-    }
-
     List<Integer> path1 = shortestPathFromRooT(nodeData1);
     List<Integer> path2 = shortestPathFromRooT(nodeData2);
 
@@ -351,9 +349,27 @@ public static void programStart() {
       return -1; // One or both nodes are not reachable from the root
     }
 
-    // Calculate the distance by summing the lengths of both
-    //  paths minus 1 reprenting the point nodes themselves
-    return (path1.size() - 1) + (path2.size() - 1);
+    // Find the lowest common ancestor between the two nodes
+
+    int commonAncestorIndex = 0;
+    for (int i = 0; i < Math.min(path1.size(), path2.size()); i++) {
+
+      Integer path1num = path1.get(i);
+      Integer path2num = path2.get(i);
+
+      // stop the loop increasing index of the common ancestor closest to 
+      // both nodes in the function for trying to find the shortest distance between them 
+      if (!path1num.equals(path2num)) {
+        break;
+      }
+
+      commonAncestorIndex++;
+    }
+  
+    // Calculate the distance by summing the lengths of both paths minus the index of their common ancestor
+    int distance = (path1.size() - commonAncestorIndex) + (path2.size() - commonAncestorIndex);
+
+    return distance;
   }
 
     
