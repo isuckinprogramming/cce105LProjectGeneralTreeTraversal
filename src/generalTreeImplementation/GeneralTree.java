@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 class TreeNodeForGeneralTreeCreation {
     
@@ -45,34 +46,31 @@ class TreeNodeForGeneralTreeCreation {
     public List<TreeNodeForGeneralTreeCreation> getChildren() {
         return children;
     }
+    public boolean isEmpty() {
+      return false;
+    }
 }
 
 public class GeneralTree {
 
-
-  public static void main(String[] args) {
-
-    programStart();
-  }
-
   public static void setGeneralTreeCreationString(String defaultContent) {
-
     treeStringRepresentation = "";
   }
 
   public static String getStringRepresentationOfTree() {
     return treeStringRepresentation;
   }
- 
-  
 
-  public static void programStart() {
+  public static GeneralTree generalTree;
+  public static JTextArea TextArea;
+
+  public static boolean firstButton() {
 
     // get String from user, instructions for creating a general tree. 
-    String numbersRaw = JOptionPane.showInputDialog("enter some numbers to convert into a general tree: ");
+    String numbersRaw = JOptionPane.showInputDialog("<html><i>Enter some numbers to convert into a general tree:</i></html>");
 
     // construct a general tree using String from user 
-    GeneralTree generalTree = treeCreation(numbersRaw);
+    generalTree = treeCreation(numbersRaw);
 
     // create the string to represent the tree visually through text
     prepareTreeStringRepresentation(generalTree.root);
@@ -80,17 +78,29 @@ public class GeneralTree {
     // present the tree to the user through console
     System.out.println(treeStringRepresentation);
 
+    return generalTree != null;
+
+  }
+
+  public static void secondButton(JTextArea textArea) {
     //Message to Ask user for Input, present instructions for user
     String message = 
-    "GENERAL TREE VISUALIZATION\n" + treeStringRepresentation +
+    "<html><b>GENERAL TREE VISUALIZATION</b></html>\n" + treeStringRepresentation +
     "\nInput numbers in pair to find their shortest distance inside tree. " +
     "\nThe first pair of numbers will be considered as the parent root node and the child node." +
-    "\nExample : 1 2 = pair( parent 1, child 2 ) ; 1 2 1 3 = pair(parent 1, child 2), pair( parent 1, child 3) ";
+    "\n\n<html><i><b>Example : 1 2 = pair( parent 1, child 2 ) ; 1 2 1 3 = pair(parent 1, child 2), pair( parent 1, child 3)</i></b></html> ";
         
-    String userInputRawQueries = JOptionPane
-      .showInputDialog( message );
+    String userInputRawQueries = JOptionPane.showInputDialog(message);
+    
+    ArrayList<int[]> unorderedPairQuery = createUnorderedPairsOfIntNumbersFromString(userInputRawQueries);
 
-    calculateFormulaResultWithShortestDistanceFromTwoNodes(generalTree, userInputRawQueries, true);
+    // Check if there are no pairs and only 1 number in queries
+    if (unorderedPairQuery == null) {
+        // Automatically insert "0" into the second button
+        textArea.setText("No pairs found. Automatically inserting '0' as the result.");
+        return;
+    }
+    calculateFormulaResultWithShortestDistanceFromTwoNodes(generalTree, userInputRawQueries, textArea);
   }
 
   public static GeneralTree treeCreation(String treeCreationString ) {
@@ -124,7 +134,6 @@ public class GeneralTree {
     String[] userInputRaw = userInput.split(" ");
 
     if (userInputRaw.length < 2) {
-      
       // terminate this function because the string the user inputed is only
       // equivalent to one number, there must be 2 or more number to qualify as a query 
       return null;  
@@ -171,55 +180,46 @@ public class GeneralTree {
   }
     
 
-
-
   public static void calculateFormulaResultWithShortestDistanceFromTwoNodes(
-      GeneralTree tree,
-      String userInputRawQueries,
-      boolean printConsoleData) {
+    GeneralTree tree,
+    String userInputRawQueries,
+    JTextArea textArea) { 
 
-    ArrayList<int[]> unorderedPairQuery = createUnorderedPairsOfIntNumbersFromString(userInputRawQueries);
+  ArrayList<int[]> unorderedPairQuery = createUnorderedPairsOfIntNumbersFromString(userInputRawQueries);
 
-    // program time calculation and test cases variables
-    long totaltime = 0;
-    int numOfTotalPairs = unorderedPairQuery.size();
-    long totalResult = 0;
-    
-    String consoleCalculationProcessMessage = "";
-    
-    for (int[] query : unorderedPairQuery) {
+  // program time calculation and test cases variables
+  long totaltime = 0;
+  int numOfTotalPairs = unorderedPairQuery.size();
+  long totalResult = 0;
 
-      long startTime = System.currentTimeMillis();
+  // Clear the JTextArea before appending new messages
+  textArea.setText("");
 
-      int distance = tree.shortestDistance(query[0], query[1]);
-      long expressionResult = ( query[0] * query[1] * distance ) % 1000000007;
-      totalResult += expressionResult;
-      // concatenate output message
+  for (int[] query : unorderedPairQuery) {
+    long startTime = System.currentTimeMillis();
+    int distance = tree.shortestDistance(query[0], query[1]);
+    long expressionResult = ( query[0] * query[1] * distance ) % 1000000007;
+    totalResult += expressionResult;
 
-      if (printConsoleData) {
-        consoleCalculationProcessMessage += 
-         "Shortest Distance of : " + query[0] + " and " + query[1] +
-          " is " + distance + " : Expression Result ( (" + query[0] + " * " + query[1] + " * " + distance
-          + " ) % 1,000,000,007( or 10^9 + 7) ) = " + expressionResult + "\n";
-      
-      }
-      long endTime = System.currentTimeMillis();
-      totaltime += endTime - startTime;
-   
-    }
-    
-    String guiProcessMainDetailsMessage = " THE TOTAL VALUE FROM PROBLEM CALCULATED THROUGH FORMULA OF ( (node Start * node End * shortest distance ) % 10^9 + 7 ) : " + totalResult + "\n" + treeStringRepresentation;
-    JOptionPane.showMessageDialog(null, guiProcessMainDetailsMessage);
-    
-    consoleCalculationProcessMessage += 
-      "total time (millis) : " + totaltime +
-      "  pairs : " + numOfTotalPairs +
-      " Total value : " + totalResult;
-      
-    System.out.println( consoleCalculationProcessMessage );
+    String message =
+        "Shortest Distance of : " + query[0] + " and " + query[1] +
+        " is " + distance + "\nExpression Result: ((" + query[0] + " * " + query[1] + " * " + distance
+        + ") % (10⁹ + 7)) = " + expressionResult + "\n\n";
+
+    textArea.append(message);
+
+    long endTime = System.currentTimeMillis();
+    totaltime += endTime - startTime;
   }
 
+  String consoleCalculationProcessMessage =
+    "Total time (millis): " + totaltime +
+    "  Pairs: " + numOfTotalPairs +
+    "  Total value: " + totalResult;
 
+  textArea.append(consoleCalculationProcessMessage);
+  System.out.println(consoleCalculationProcessMessage); 
+}
 
   public TreeNodeForGeneralTreeCreation root;
 
@@ -335,27 +335,50 @@ public class GeneralTree {
     }
 
 
-  public int shortestDistance(int nodeData1, int nodeData2) {
-
-    TreeNodeForGeneralTreeCreation node1 = findNode(root, nodeData1);
-    TreeNodeForGeneralTreeCreation node2 = findNode(root, nodeData2);
-
-    if (node1 == null || node2 == null) {
-      return -1; // One or both nodes not found in the tree
-    }
-
-    List<Integer> path1 = shortestPathFromRooT(nodeData1);
-    List<Integer> path2 = shortestPathFromRooT(nodeData2);
-
-    if (path1.isEmpty() || path2.isEmpty()) {
-      return -1; // One or both nodes are not reachable from the root
-    }
-
-    // Calculate the distance by summing the lengths of both
-    //  paths minus 1 reprenting the point nodes themselves
-    return (path1.size() - 1) + (path2.size() - 1);
+    public int shortestDistance(int nodeData1, int nodeData2) {
+      TreeNodeForGeneralTreeCreation node1 = findNode(root, nodeData1);
+      TreeNodeForGeneralTreeCreation node2 = findNode(root, nodeData2);
+  
+      if (node1 == null || node2 == null) {
+          return 0; // One or both nodes not found in the tree
+      }
+  
+      TreeNodeForGeneralTreeCreation lca = findLowestCommonAncestor(root, node1, node2);
+  
+      if (lca == null) {
+          return -1; // Lowest common ancestor not found
+      }
+  
+      int distance1 = node1.getDepth() - lca.getDepth();
+      int distance2 = node2.getDepth() - lca.getDepth();
+  
+      return distance1 + distance2;
   }
-
+  
+  private TreeNodeForGeneralTreeCreation findLowestCommonAncestor(TreeNodeForGeneralTreeCreation root, TreeNodeForGeneralTreeCreation node1, TreeNodeForGeneralTreeCreation node2) {
+      if (root == null || root == node1 || root == node2) {
+          return root;
+      }
+  
+      List<TreeNodeForGeneralTreeCreation> children = root.getChildren();
+      TreeNodeForGeneralTreeCreation lca = null;
+  
+      for (TreeNodeForGeneralTreeCreation child : children) {
+          TreeNodeForGeneralTreeCreation childLca = findLowestCommonAncestor(child, node1, node2);
+  
+          if (childLca != null) {
+              if (lca == null) {
+                  lca = childLca;
+              } else {
+                  // If both nodes are found in different subtrees of the current root,
+                  // then the current root is the lowest common ancestor.
+                  return root;
+              }
+          }
+      }
+  
+      return lca;
+  }  
     
   public static String treeStringRepresentation = "";
 
@@ -374,7 +397,7 @@ public class GeneralTree {
   public static void prepareTreeStringRepresentation(TreeNodeForGeneralTreeCreation node) {
 
 
-    String padding = "  ".repeat(node.getDepth()) + "|__"; // Create padding based on depth
+    String padding = "  ".repeat(node.getDepth()) + "└──"; // Create padding based on depth
     treeStringRepresentation += padding + node.getNodeData() + "\n";
 
     for (TreeNodeForGeneralTreeCreation child : node.getChildren()) {
@@ -383,22 +406,7 @@ public class GeneralTree {
     }
     // BASE CASE - Recursion stops when there are no more child nodes to access and call upon this method 
   }
-  
 
-  // this fucntion does not work
-  public static int[][] convertToUnorderedPairs(int[] numbers) {
-    List<int[]> pairsList = new ArrayList<>();
-
-    for (int firstNumIndex = 0; firstNumIndex < numbers.length; firstNumIndex = firstNumIndex + 2) {
-
-      int[] pair = { numbers[firstNumIndex], numbers[firstNumIndex + 1] };
-      pairsList.add(pair);
-
-    }
-
-    int[][] pairsArray = new int[pairsList.size()][2];
-    pairsList.toArray(pairsArray);
-
-    return pairsArray;
+  public void generalTree() {
   }
 }
